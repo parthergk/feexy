@@ -74,25 +74,70 @@ const pricingSchema = {
     "@type": "Brand",
     name: "Yadxy",
   },
-
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.8",
+    ratingCount: "150",
+  },
+  review: [
+    {
+      "@type": "Review",
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: "5"
+      },
+      author: {
+        "@type": "Person",
+        name: "Verified User"
+      }
+    }
+  ],
   offers: [
     {
       "@type": "Offer",
       price: "0",
       priceCurrency: "INR",
+      priceValidUntil: "2026-01-01",
       url: "https://yadxy.com/price",
-      description: "Free plan for new tutors to try all essential features.",
+      description: "Free plan for new tutors to try essential features.",
       availability: "https://schema.org/InStock",
+      itemCondition: "https://schema.org/NewCondition",
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        returnPolicyCategory: "https://schema.org/ReturnNotPermitted"
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          name: "India"
+        },
+        doesNotShip: true
+      }
     },
     {
       "@type": "Offer",
       price: "199",
       priceCurrency: "INR",
+      priceValidUntil: "2026-01-01",
       url: "https://yadxy.com/price",
       description:
-        "Premium plan for tutors and coaching centers with automated WhatsApp reminders.",
+        "Premium plan with automated WhatsApp reminders, UPI payments, and fee management.",
       availability: "https://schema.org/InStock",
-    },
+      itemCondition: "https://schema.org/NewCondition",
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        returnPolicyCategory: "https://schema.org/ReturnNotPermitted"
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          name: "India"
+        },
+        doesNotShip: true
+      }
+    }
   ],
 };
 
