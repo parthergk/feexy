@@ -29,7 +29,30 @@ const siteDescription =
   "Track tuition fees effortlessly with Yadxy. Automated WhatsApp reminders, UPI payments, and student management for tutors and coaching centers. Try free today!";
 
 export const metadata: Metadata = {
-
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "icon",
+        url: "/android-chrome-192x192.png",
+        sizes: "192x192",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        url: "/android-chrome-512x512.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+    ],
+  },
   keywords: [
     "tuition fee tracker app",
     "fee management software for teachers",
@@ -141,24 +164,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta
-          name="google-site-verification"
-          content="xeE6RJLQ8uDj1hX8plqKs_n0j32IaEzOm1Qq6QTMDX0"
-        />
         <link rel="manifest" href="/site.webmanifest" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link
           rel="preload"
           href="/fonts/Forum-Regular.ttf"
