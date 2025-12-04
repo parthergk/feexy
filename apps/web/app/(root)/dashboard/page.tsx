@@ -10,6 +10,7 @@ import { FeeRecordProvider } from "../../../context/FeeRecordProvider";
 import UpgradePlan from "../../../components/UpgradePlan";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import UpgradePlanError from "../../../components/UpgradePlanError";
 const Students = lazy(() => import("../../../components/dashboard/Students"));
 const FeeTracking = lazy(
   () => import("../../../components/dashboard/FeeTracking")
@@ -18,23 +19,23 @@ const Report = lazy(() => import("../../../components/dashboard/Report"));
 const Reminder = lazy(() => import("../../../components/dashboard/Reminders"));
 
 export default function DashboardPage() {
-  const {data:session, status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [section, setSection] = useState("dashboard");
 
-  useEffect(()=>{
-    if(status === "loading") return;
+  useEffect(() => {
+    if (status === "loading") return;
 
     if (status === "unauthenticated") {
-      router.push('/login')
-      return
+      router.push("/login");
+      return;
     }
 
     if (session?.user.profileComplete === false) {
-      router.replace('/profile');
+      router.replace("/profile");
     }
-  },[status, session, router]);
+  }, [status, session, router]);
 
   const sections = [
     { name: "dashboard", component: <Dashboard /> },
@@ -72,46 +73,55 @@ export default function DashboardPage() {
     },
   ];
 
-  if (status === 'loading' || session?.user.profileComplete === false) {
+  if (status === "loading" || session?.user.profileComplete === false) {
     return <p>Loading...</p>;
   }
   return (
-    <div className="relative sm:h-screen md:p-5 bg-[linear-gradient(to_bottom_right,#FFFFFF_0%,#E0ECFF_25%,#EAE2FF_50%,#F8E8DB_75%,#FFFFFF_100%)] flex gap-1 sm:gap-5">
-      <RightBar isOpen={isOpen} setIsOpen={setIsOpen} setSection={setSection} />
-      <div className="relative flex flex-col flex-1 w-full min-h-screen sm:min-h-full mx-auto rounded-xl bg-offwhite/50 backdrop-blur-sm shadow-xl py-4 md:py-6 px-3 sm:px-4 md:px-5">
-        {/* Header Section */}
-        <div className=" flex flex-col md:flex-row-reverse justify-between md:items-start">
-          <div className=" flex justify-between items-center">
-            <div
-              onClick={() => setIsOpen(true)}
-              className=" block md:hidden cursor-pointer"
-            >
-              <Menu size={28} />
+    <>
+      <div className="relative sm:h-screen md:p-5 bg-[linear-gradient(to_bottom_right,#FFFFFF_0%,#E0ECFF_25%,#EAE2FF_50%,#F8E8DB_75%,#FFFFFF_100%)] flex gap-1 sm:gap-5">
+        <RightBar
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setSection={setSection}
+        />
+        <div className="relative flex flex-col flex-1 w-full min-h-screen sm:min-h-full mx-auto rounded-xl bg-offwhite/50 backdrop-blur-sm shadow-xl py-4 md:py-6 px-3 sm:px-4 md:px-5">
+          {/* Header Section */}
+          <div className=" flex flex-col md:flex-row-reverse justify-between md:items-start">
+            <div className=" flex justify-between items-center">
+              <div
+                onClick={() => setIsOpen(true)}
+                className=" block md:hidden cursor-pointer"
+              >
+                <Menu size={28} />
+              </div>
+              <User />
             </div>
-            <User />
-          </div>
 
-          <div className=" mt-5 md:mt-0 mb-5 ">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl text-heading">
-              Dashboard
-            </h1>
-            <p className="text-sm md:text-base lg:text-lg text-sub mt-1">
-              Track your students’ fee status and manage your profile
-            </p>
+            <div className=" mt-5 md:mt-0 mb-5 ">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl text-heading">
+                Dashboard
+              </h1>
+              <p className="text-sm md:text-base lg:text-lg text-sub mt-1">
+                Track your students’ fee status and manage your profile
+              </p>
+              <div className=" flex items-en">
+                {session?.user.planStatus === "expired" && <UpgradePlanError />}
+              </div>
+            </div>
           </div>
+          <UpgradePlan />
+          <FeeRecordProvider>
+            <OverdueProvider>
+              {sections.map(
+                (item) =>
+                  item.name === section && (
+                    <div key={item.name}>{item.component}</div>
+                  )
+              )}
+            </OverdueProvider>
+          </FeeRecordProvider>
         </div>
-        <UpgradePlan />
-        <FeeRecordProvider>
-          <OverdueProvider>
-            {sections.map(
-              (item) =>
-                item.name === section && (
-                  <div key={item.name}>{item.component}</div>
-                )
-            )}
-          </OverdueProvider>
-        </FeeRecordProvider>
       </div>
-    </div>
+    </>
   );
 }
